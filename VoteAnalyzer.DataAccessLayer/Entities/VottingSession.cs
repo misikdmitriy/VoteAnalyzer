@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VoteAnalyzer.DataAccessLayer.Entities
 {
@@ -16,8 +17,12 @@ namespace VoteAnalyzer.DataAccessLayer.Entities
         /// </summary>
         public string Subject { get; set; }
         /// <summary>
+        /// Votting session number
+        /// </summary>
+        public int Number { get; set; }
+        /// <summary>
         /// Session link
         /// </summary>
-        public Session Session { get; set; }
+        public Guid SessionId { get; set; }
     }
 }

@@ -2,18 +2,22 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+
 using VoteAnalyzer.DataAccessLayer.DbContexts;
 using VoteAnalyzer.DataAccessLayer.Entities;
 
 namespace VoteAnalyzer.DataAccessLayer.Repositories
 {
-    public abstract class AbstractRepository<TModel> : IRepository<TModel, Guid>
+    public class Repository<TModel> : IRepository<TModel, Guid>
         where TModel : class, IIdentifiable<Guid>
     {
         public async Task CreateAsync(TModel model)
         {
             using (var context = new MainDbContext())
             {
+                model.Id = Guid.NewGuid();
+                AttachAll(context, model);
+
                 context.Set<TModel>().Add(model);
                 await context.SaveChangesAsync();
             }
@@ -41,14 +45,14 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
         {
             using (var context = new MainDbContext())
             {
-                var entity = await GetQuery(context).FirstOrDefaultAsync(m => m.Id == id);
+                var model = await context.Set<TModel>().FirstOrDefaultAsync(m => m.Id == id);
 
-                if (entity == null)
+                if (model == null)
                 {
                     return;
                 }
 
-                context.Set<TModel>().Remove(entity);
+                context.Entry(model).State = EntityState.Deleted;
                 await context.SaveChangesAsync();
             }
         }
@@ -56,6 +60,10 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
         protected virtual IQueryable<TModel> GetQuery(MainDbContext context)
         {
             return context.Set<TModel>();
+        }
+
+        protected virtual void AttachAll(MainDbContext context, TModel model)
+        {
         }
     }
 }

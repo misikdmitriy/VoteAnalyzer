@@ -14,7 +14,7 @@ namespace VoteAnalyzer.DataAccessLayer.Entities
         /// <summary>
         /// Owner of vote
         /// </summary>
-        public Deputy Deputy { get; set; }
+        public Guid DeputyId { get; set; }
         /// <summary>
         /// Current vote (hold/against/etc.)
         /// </summary>
@@ -22,6 +22,6 @@ namespace VoteAnalyzer.DataAccessLayer.Entities
         /// <summary>
         /// Votting session
         /// </summary>
-        public VottingSession VottingSession { get; set; }
+        public Guid VottingSessionId { get; set; }
     }
 }

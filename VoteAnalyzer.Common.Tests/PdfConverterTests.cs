@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using VoteAnalyzer.Common.Models;
 
 namespace VoteAnalyzer.Common.Tests
@@ -29,6 +30,7 @@ namespace VoteAnalyzer.Common.Tests
             var result = _pdfConverter.ConvertToText(parseInfo);
 
             // Assert
+            result.Length.ShouldBePositive();
         }
     }
 }

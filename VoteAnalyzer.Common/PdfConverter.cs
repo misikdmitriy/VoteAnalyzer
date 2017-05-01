@@ -7,7 +7,7 @@ using Path = System.IO.Path;
 
 namespace VoteAnalyzer.Common
 {
-    public class PdfConverter
+    public class PdfConverter : IPdfConverter
     {
         public string ConvertToText(ParseInfo info)
         {

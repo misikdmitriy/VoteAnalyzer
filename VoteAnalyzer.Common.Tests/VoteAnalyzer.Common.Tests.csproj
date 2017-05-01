@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{26A22B40-DB04-4222-8C3B-804E239DBC85}</ProjectGuid>
+    <ProjectGuid>{698F535D-DDDE-4168-B61C-CCE3C972D8BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VoteAnalyzer.Parser</RootNamespace>
-    <AssemblyName>VoteAnalyzer.Parser</AssemblyName>
+    <RootNamespace>VoteAnalyzer.Common.Tests</RootNamespace>
+    <AssemblyName>VoteAnalyzer.Common.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,8 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Shouldly, Version=2.8.2.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
+      <HintPath>..\packages\Shouldly.2.8.2\lib\net451\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HeaderParser.cs" />
-    <Compile Include="IParser.cs" />
+    <Compile Include="PdfConverterTests.cs" />
+    <Compile Include="TranslatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,13 +55,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VoteAnalyzer.Common\VoteAnalyzer.Common.csproj">
-      <Project>{D59229E6-D67C-4FCD-90A2-EF58401D7895}</Project>
+      <Project>{d59229e6-d67c-4fcd-90a2-ef58401d7895}</Project>
       <Name>VoteAnalyzer.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\VoteAnalyzer.DataAccessLayer\VoteAnalyzer.DataAccessLayer.csproj">
       <Project>{34468D5F-870A-4D6D-A96A-1E86467AC82C}</Project>
       <Name>VoteAnalyzer.DataAccessLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,16 @@
 ﻿using System;
+
 using NUnit.Framework;
+
 using Shouldly;
+
 using VoteAnalyzer.DataAccessLayer.DbContexts;
 using VoteAnalyzer.DataAccessLayer.Entities;
 using VoteAnalyzer.DataAccessLayer.Repositories;
 
 namespace VoteAnalyzer.DataAccessLayer.Tests
 {
+    [TestFixture]
     public class RepositoryTests
     {
         private VottingSession _vottingSession;

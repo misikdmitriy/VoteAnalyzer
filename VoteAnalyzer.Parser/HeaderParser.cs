@@ -10,9 +10,10 @@ namespace VoteAnalyzer.Parser
     public class HeaderParser : IParser<ParseInfo, Session>
     {
         private readonly IPdfConverter _pdfConverter;
-        private IParser<string, string[]> _wordParser;
+        private readonly IParser<string, string[]> _wordParser;
 
-        private string[] _textBefore = { "Броварська", "міська", "рада" };
+        private readonly string[] _textBefore = { "Броварська", "міська", "рада" };
+        private const string NameDateSeparator = "від";
 
         public HeaderParser(IPdfConverter pdfConverter, IParser<string, string[]> wordParser)
         {
@@ -37,10 +38,29 @@ namespace VoteAnalyzer.Parser
                 if (index != -1)
                 {
                     var sessionNameStartIndex = index + 3;
+
+                    var cutted = splitted.Skip(sessionNameStartIndex).ToArray();
+
+                    var indexOfDate =
+                        cutted.IndexOfByPredicate(
+                            (s, i) => s.Equals(NameDateSeparator, StringComparison.InvariantCultureIgnoreCase)) + 1;
+
+                    var name = cutted.Take(indexOfDate - 1)
+                        .Aggregate((current, next) => current + " " + next);
+
+                    var date = new DateTime(2000 + int.Parse(cutted[indexOfDate + 2]),
+                        int.Parse(cutted[indexOfDate + 1]),
+                        int.Parse(cutted[indexOfDate]));
+
+                    return new Session
+                    {
+                        DateTime = date,
+                        Name = name
+                    };
                 }
             }
 
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

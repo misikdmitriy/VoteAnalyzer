@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using Shouldly;
+
 using VoteAnalyzer.Common;
 using VoteAnalyzer.Common.Models;
 using VoteAnalyzer.DataAccessLayer.Entities;
@@ -13,12 +14,14 @@ namespace VoteAnalyzer.Parser.Tests
     {
         private HeaderParser _parser;
         private Mock<IPdfConverter> _pdfConverterMock;
+        private Mock<IParser<string, string[]>> _parserMock;
 
         [SetUp]
         public void Setup()
         {
             _pdfConverterMock = new Mock<IPdfConverter>();
-            _parser = new HeaderParser(_pdfConverterMock.Object);
+            _parserMock = new Mock<IParser<string, string[]>>();
+            _parser = new HeaderParser(_pdfConverterMock.Object, _parserMock.Object);
         }
 
         [Test]
@@ -26,7 +29,10 @@ namespace VoteAnalyzer.Parser.Tests
         {
             // Arrange
             _pdfConverterMock.Setup(converter => converter.ConvertToText(It.IsAny<ParseInfo>()))
-                .Returns("Броварська міська рада 28 засідання 05.02.16");
+                .Returns("Броварська міська рада 28 засідання від 05.02.16");
+
+            _parserMock.Setup(p => p.Parse(It.IsAny<string>()))
+                .Returns(new[] { "Броварська", "міська", "рада", "28", "засідання", "від", "05", "02", "16" });
 
             var expected = new Session
             {
@@ -49,10 +55,17 @@ namespace VoteAnalyzer.Parser.Tests
             _pdfConverterMock.Setup(converter => converter.ConvertToText(It.IsAny<ParseInfo>()))
                 .Returns("Броварська міська рада 31 засідання від 15.06.15 і таке інше");
 
+            _parserMock.Setup(p => p.Parse(It.IsAny<string>()))
+                .Returns(new[]
+                {
+                    "Броварська", "міська", "рада", "31", "засідання", "від", "15", "06", "15",
+                    "і", "таке", "інше"
+                });
+
             var expected = new Session
             {
                 DateTime = new DateTime(2015, 6, 15),
-                Name = "31 засідання від"
+                Name = "31 засідання"
             };
 
             // Act

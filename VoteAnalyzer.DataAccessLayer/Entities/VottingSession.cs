@@ -19,7 +19,7 @@ namespace VoteAnalyzer.DataAccessLayer.Entities
         /// <summary>
         /// Votting session number
         /// </summary>
-        public int Number { get; set; }
+        public int? Number { get; set; }
         /// <summary>
         /// Session link
         /// </summary>

@@ -31,6 +31,14 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
             }
         }
 
+        public async Task<TModel[]> ReadAsync(Func<TModel, bool> predicate)
+        {
+            using (var context = new MainDbContext())
+            {
+                return await Task.FromResult(GetQuery(context).Where(predicate).ToArray());
+            }
+        }
+
         public async Task UpdateAsync(TModel model)
         {
             using (var context = new MainDbContext())

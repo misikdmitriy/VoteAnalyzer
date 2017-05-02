@@ -83,6 +83,21 @@ namespace VoteAnalyzer.DataAccessLayer.Tests
         }
 
         [Test]
+        public void ReadAsyncShouldReturnCorrectArray()
+        {
+            // Arrange
+            Repository.CreateAsync(_vottingSession);
+
+            // Act
+            var result = Repository.ReadAsync(m => m.Id == _vottingSession.Id).Result;
+
+            // Assert
+            result.Length.ShouldBe(1);
+            result[0].Number.ShouldBe(_vottingSession.Number);
+            result[0].Subject.ShouldBe(_vottingSession.Subject);
+        }
+
+        [Test]
         public void UpdateAsyncShouldUpdateModel()
         {
             // Arrange

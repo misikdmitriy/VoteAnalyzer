@@ -9,15 +9,34 @@ namespace VoteAnalyzer.Common.Extensions
         public static int IndexOfByPredicate<TModel>(this IEnumerable<TModel> enumerable, 
             Func<TModel, int, bool> predicate)
         {
-            for (var i = 0; i < enumerable.Count(); i++)
+            var array = enumerable.ToArray();
+
+            for (var i = 0; i < array.Length; i++)
             {
-                if (predicate(enumerable.ElementAt(i), i))
+                if (predicate(array[i], i))
                 {
                     return i;
                 }
             }
 
             return -1;
+        }
+
+        public static int LastIndexOfByPredicate<TModel>(this IEnumerable<TModel> enumerable,
+            Func<TModel, int, bool> predicate)
+        {
+            var index = -1;
+            var array = enumerable.ToArray();
+
+            for (var i = 0; i < array.Length; i++)
+            {
+                if (predicate(array[i], i))
+                {
+                    index = i;
+                }
+            }
+
+            return index;
         }
     }
 }

@@ -16,9 +16,9 @@ namespace VoteAnalyzer.DataAccessLayer.Entities
         /// </summary>
         public Guid DeputyId { get; set; }
         /// <summary>
-        /// Current vote (hold/against/etc.)
+        /// Current vote identifier
         /// </summary>
-        public VoteAction VoteAction { get; set; }
+        public Guid KnownVoteId { get; set; }
         /// <summary>
         /// Votting session
         /// </summary>

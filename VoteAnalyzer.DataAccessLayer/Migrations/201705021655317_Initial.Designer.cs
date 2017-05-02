@@ -13,7 +13,7 @@ namespace VoteAnalyzer.DataAccessLayer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201705011049383_Initial"; }
+            get { return "201705021655317_Initial"; }
         }
         
         string IMigrationMetadata.Source

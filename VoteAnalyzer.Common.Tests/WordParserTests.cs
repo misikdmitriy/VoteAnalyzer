@@ -1,19 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 
-namespace VoteAnalyzer.Parser.Tests
+namespace VoteAnalyzer.Common.Tests
 {
     [TestFixture]
     public class WordParserTests
     {
-        private IParser<string, string[]> _wordParser;
-
-        [SetUp]
-        public void Setup()
-        {
-            _wordParser = new WordParser();
-        }
-
         [Test]
         public void ParseShouldReturnSplittedStrings()
         {
@@ -21,7 +13,7 @@ namespace VoteAnalyzer.Parser.Tests
             var input = "E, f, ffff. joke   alala";
 
             // Act
-            var result = _wordParser.Parse(input);
+            var result = WordSeparator.Split(input);
 
             // Assert
             result[0].ShouldBe("E");
@@ -36,7 +28,7 @@ namespace VoteAnalyzer.Parser.Tests
         {
             // Arrange
             // Act
-            var result = _wordParser.Parse(null);
+            var result = WordSeparator.Split(null);
 
             // Arrange
             result.Length.ShouldBe(0);

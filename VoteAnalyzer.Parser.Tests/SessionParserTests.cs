@@ -3,35 +3,32 @@ using Moq;
 using NUnit.Framework;
 using Shouldly;
 
-using VoteAnalyzer.Common;
-using VoteAnalyzer.Common.Models;
 using VoteAnalyzer.DataAccessLayer.Entities;
+using VoteAnalyzer.Parser.Models;
+using VoteAnalyzer.Parser.Parsers;
+using VoteAnalyzer.PdfIntegration.Models;
+using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Tests
 {
     [TestFixture]
-    public class HeaderParserTests
+    public class SessionParserTests
     {
-        private HeaderParser _parser;
-        private Mock<IPdfConverter> _pdfConverterMock;
-        private Mock<IParser<string, string[]>> _parserMock;
+        private SessionParser _parser;
+        private Mock<IPdfContainer> _pdfContainerMock;
 
         [SetUp]
         public void Setup()
         {
-            _pdfConverterMock = new Mock<IPdfConverter>();
-            _parserMock = new Mock<IParser<string, string[]>>();
-            _parser = new HeaderParser(_pdfConverterMock.Object, _parserMock.Object);
+            _pdfContainerMock = new Mock<IPdfContainer>();
+            _parser = new SessionParser(_pdfContainerMock.Object);
         }
 
         [Test]
         public void ParseShouldReturnCorrectSession1()
         {
             // Arrange
-            _pdfConverterMock.Setup(converter => converter.ConvertToText(It.IsAny<ParseInfo>()))
-                .Returns("Броварська міська рада 28 засідання від 05.02.16");
-
-            _parserMock.Setup(p => p.Parse(It.IsAny<string>()))
+            _pdfContainerMock.Setup(converter => converter.GetSeparatedWords(It.IsAny<PdfFileInfo>(), It.IsAny<int>()))
                 .Returns(new[] { "Броварська", "міська", "рада", "28", "засідання", "від", "05", "02", "16" });
 
             var expected = new Session
@@ -52,10 +49,7 @@ namespace VoteAnalyzer.Parser.Tests
         public void ParseShouldReturnCorrectSession2()
         {
             // Arrange
-            _pdfConverterMock.Setup(converter => converter.ConvertToText(It.IsAny<ParseInfo>()))
-                .Returns("Броварська міська рада 31 засідання від 15.06.15 і таке інше");
-
-            _parserMock.Setup(p => p.Parse(It.IsAny<string>()))
+            _pdfContainerMock.Setup(converter => converter.GetSeparatedWords(It.IsAny<PdfFileInfo>(), It.IsAny<int>()))
                 .Returns(new[]
                 {
                     "Броварська", "міська", "рада", "31", "засідання", "від", "15", "06", "15",

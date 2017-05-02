@@ -16,6 +16,7 @@ namespace VoteAnalyzer.DataAccessLayer.DbContexts
         public IDbSet<Deputy> Deputies { get; set; }
         public IDbSet<Session> Sessions { get; set; }
         public IDbSet<Vote> Votes { get; set; }
+        public IDbSet<KnownVote> KnownVotes { get; set; }
         public IDbSet<VottingSession> VottingSessions { get; set; }
 
         public MainDbContext()
@@ -34,6 +35,7 @@ namespace VoteAnalyzer.DataAccessLayer.DbContexts
             modelBuilder.Configurations.Add(new SessionTypeConfiguration());
             modelBuilder.Configurations.Add(new VoteTypeConfiguration());
             modelBuilder.Configurations.Add(new VottingSessionTypeConfiguration());
+            modelBuilder.Configurations.Add(new KnownVoteTypeConfiguration());
         }
     }
 }

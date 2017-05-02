@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\EnumerableExtension.cs" />
     <Compile Include="IPdfConverter.cs" />
     <Compile Include="Models\ParseInfo.cs" />
     <Compile Include="PdfConverter.cs" />

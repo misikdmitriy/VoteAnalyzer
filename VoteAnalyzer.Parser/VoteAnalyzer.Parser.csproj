@@ -46,6 +46,7 @@
     <Compile Include="HeaderParser.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

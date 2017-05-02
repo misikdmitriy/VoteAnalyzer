@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using VoteAnalyzer.Common;
+using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.Common.Models;
 using VoteAnalyzer.DataAccessLayer.Entities;
 
@@ -8,13 +9,15 @@ namespace VoteAnalyzer.Parser
 {
     public class HeaderParser : IParser<ParseInfo, Session>
     {
-        private IPdfConverter _pdfConverter;
+        private readonly IPdfConverter _pdfConverter;
+        private IParser<string, string[]> _wordParser;
 
-        private string _textBefore = "Броварська міська рада";
+        private string[] _textBefore = { "Броварська", "міська", "рада" };
 
-        public HeaderParser(IPdfConverter pdfConverter)
+        public HeaderParser(IPdfConverter pdfConverter, IParser<string, string[]> wordParser)
         {
             _pdfConverter = pdfConverter;
+            _wordParser = wordParser;
         }
 
         public Session Parse(ParseInfo argument)
@@ -23,33 +26,18 @@ namespace VoteAnalyzer.Parser
 
             if (!string.IsNullOrEmpty(text))
             {
-                // Session name start after 'Броварська міська рада'
-                var startIndex = text.IndexOf(_textBefore, StringComparison.InvariantCultureIgnoreCase) 
-                    + _textBefore.Length;
+                var splitted = _wordParser.Parse(text);
 
-                // Session name ends with date
-                var readTo = text.Substring(startIndex)
-                    .IndexOf(".", StringComparison.InvariantCultureIgnoreCase) + 6;
+                var index =
+                    splitted.IndexOfByPredicate(
+                        (s, i) => s.Equals(_textBefore[0], StringComparison.InvariantCultureIgnoreCase)
+                            && splitted[i + 1].Equals(_textBefore[1], StringComparison.InvariantCultureIgnoreCase)
+                            && splitted[i + 2].Equals(_textBefore[2], StringComparison.InvariantCultureIgnoreCase));
 
-                var result = text.Substring(startIndex, readTo);
-
-                var numbers = Enumerable.Range(0, 10).Select(n => n.ToString()[0]).ToArray();
-
-                var indexOfDate = result.Substring(4)
-                    .IndexOfAny(numbers) + 4;
-
-                var yearMonthDay = result.Substring(indexOfDate)
-                    .Split('.')
-                    .Select(int.Parse)
-                    .ToArray();
-
-                var date = new DateTime(2000 + yearMonthDay[2], yearMonthDay[1], yearMonthDay[0]);
-
-                return new Session
+                if (index != -1)
                 {
-                    DateTime = date,
-                    Name = result.Substring(1, indexOfDate - 2)
-                };
+                    var sessionNameStartIndex = index + 3;
+                }
             }
 
             throw new NotImplementedException();

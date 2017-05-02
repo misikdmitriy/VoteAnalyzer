@@ -6,5 +6,6 @@ namespace VoteAnalyzer.PdfIntegration.PdfContainers
     {
         string[] GetSeparatedWords(PdfFileInfo fileInfo, int page);
         string GetContent(PdfFileInfo fileInfo, int page);
+        void Clear();
     }
 }

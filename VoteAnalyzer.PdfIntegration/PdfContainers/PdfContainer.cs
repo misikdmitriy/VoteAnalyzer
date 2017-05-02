@@ -58,5 +58,11 @@ namespace VoteAnalyzer.PdfIntegration.PdfContainers
 
             return _contentDictionary[fileInfo][page];
         }
+
+        public void Clear()
+        {
+            _contentDictionary.Clear();
+            _splittedTextDictionary.Clear();
+        }
     }
 }

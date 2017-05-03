@@ -12,8 +12,8 @@ namespace VoteAnalyzer.Parser.Parsers
     {
         private readonly IPdfContainer _pdfContainer;
 
-        private static readonly string[] TextBefore = { "Результат", "голосування" };
-        private static readonly string TextAfter = "Підсумки";
+        private static readonly string[] TextBefore = { "п/п", "по-батькові", "депутата" };
+        private static readonly string[] TextAfter = { "\"Проти\"" };
 
         public DeputiesParser(IPdfContainer pdfContainer)
         {
@@ -29,13 +29,19 @@ namespace VoteAnalyzer.Parser.Parsers
             var startIndex =
                 splitted.LastIndexOfByPredicate(
                     (s, i) => s.Equals(TextBefore[0], StringComparison.InvariantCultureIgnoreCase)
-                              && splitted[i + 1].Equals(TextBefore[1], StringComparison.InvariantCultureIgnoreCase)) + 2;
+                              && splitted[i + 1].Equals(TextBefore[1], StringComparison.InvariantCultureIgnoreCase)
+                              && splitted[i + 2].Equals(TextBefore[2], StringComparison.InvariantCultureIgnoreCase)) + 3;
 
             IEnumerable<string> cutted = splitted;
 
             while (startIndex != -1)
             {
                 cutted = cutted.Skip(startIndex + 1).ToArray();
+
+                if (cutted.ElementAt(0).Equals(TextAfter[0], StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
 
                 deputies.Add(new DeputyParserModel
                 {

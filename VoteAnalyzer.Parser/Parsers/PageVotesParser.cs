@@ -15,8 +15,8 @@ namespace VoteAnalyzer.Parser.Parsers
         private readonly IParser<ParseInfo, DeputyParserModel[]> _deputiesParser;
         private readonly IParser<ParseInfo, VottingSessionParserModel> _vottingSessionParser;
 
-        private static readonly string[] TextBefore = { "Результат", "голосування" };
-        private static readonly string TextAfter = "Підсумки";
+        private static readonly string[] TextBefore = { "п/п", "по-батькові", "депутата" };
+        private static readonly string[] TextAfter = { "\"Проти\"" };
 
         public PageVotesParser(IParser<ParseInfo, DeputyParserModel[]> deputiesParser,
             IPdfContainer pdfContainer,
@@ -40,7 +40,8 @@ namespace VoteAnalyzer.Parser.Parsers
             var startIndex =
                 splitted.LastIndexOfByPredicate(
                     (s, i) => s.Equals(TextBefore[0], StringComparison.InvariantCultureIgnoreCase)
-                              && splitted[i + 1].Equals(TextBefore[1], StringComparison.InvariantCultureIgnoreCase)) + 2;
+                              && splitted[i + 1].Equals(TextBefore[1], StringComparison.InvariantCultureIgnoreCase)
+                              && splitted[i + 2].Equals(TextBefore[2], StringComparison.InvariantCultureIgnoreCase)) + 3;
 
             IEnumerable<string> cutted = splitted;
 
@@ -56,7 +57,7 @@ namespace VoteAnalyzer.Parser.Parsers
                 {
                     startIndex =
                         cutted.IndexOfByPredicate(
-                            (s, i) => s.Equals(TextAfter, StringComparison.InvariantCultureIgnoreCase));
+                            (s, i) => s.Equals(TextAfter[0], StringComparison.InvariantCultureIgnoreCase));
 
                     lastIteration = true;
                 }

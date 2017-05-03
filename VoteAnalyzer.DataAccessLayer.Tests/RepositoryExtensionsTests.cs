@@ -2,12 +2,10 @@
 using Moq;
 using NUnit.Framework;
 using Shouldly;
-
-using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.DataAccessLayer.Entities;
 using VoteAnalyzer.DataAccessLayer.Repositories;
 
-namespace VoteAnalyzer.Common.Tests
+namespace VoteAnalyzer.DataAccessLayer.Tests
 {
     [TestFixture]
     public class RepositoryExtensionsTests

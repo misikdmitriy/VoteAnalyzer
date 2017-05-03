@@ -6,11 +6,11 @@ namespace VoteAnalyzer.Parser.Parsers
     /// <summary>
     /// Parse whole document
     /// </summary>
-    public class VoteParserFacade : AbstractParser<ParseInfo, VoteParserModel[]>
+    public class DocumentVotesParser : AbstractParser<ParseInfo, VoteParserModel[]>
     {
         private readonly IParser<ParseInfo, VoteParserModel[]> _parser;
 
-        public VoteParserFacade(IParser<ParseInfo, VoteParserModel[]> parser)
+        public DocumentVotesParser(IParser<ParseInfo, VoteParserModel[]> parser)
         {
             _parser = parser;
         }

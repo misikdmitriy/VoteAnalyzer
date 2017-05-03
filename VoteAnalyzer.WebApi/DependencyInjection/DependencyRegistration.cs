@@ -1,14 +1,22 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Autofac;
 using Autofac.Core;
 
 using VoteAnalyzer.DataAccessLayer.DbContexts;
 using VoteAnalyzer.DataAccessLayer.Entities;
+using VoteAnalyzer.DataAccessLayer.Factories;
 using VoteAnalyzer.DataAccessLayer.Repositories;
 using VoteAnalyzer.Parser.Models;
 using VoteAnalyzer.Parser.Parsers;
+using VoteAnalyzer.PdfIntegration.Models;
 using VoteAnalyzer.PdfIntegration.PdfContainers;
 using VoteAnalyzer.PdfIntegration.PdfServices;
+using VoteAnalyzer.Services;
+using VoteAnalyzer.WebApi.Models;
 
 namespace VoteAnalyzer.WebApi.DependencyInjection
 {
@@ -16,48 +24,78 @@ namespace VoteAnalyzer.WebApi.DependencyInjection
     {
         public static IContainer Register(ContainerBuilder builder)
         {
-            builder.RegisterType<IRepository<Deputy, Guid>>()
-                .As<Repository<Deputy>>();
+            builder.RegisterType<Repository<Deputy>>()
+                .As<IRepository<Deputy, Guid>>();
 
-            builder.RegisterType<IRepository<KnownVote, Guid>>()
-                .As<Repository<KnownVote>>();
+            builder.RegisterType<Repository<KnownVote>>()
+                .As<IRepository<KnownVote, Guid>>();
 
-            builder.RegisterType<IRepository<Session, Guid>>()
-                .As<Repository<Session>>();
+            builder.RegisterType<Repository<Session>>()
+                .As<IRepository<Session, Guid>>();
 
-            builder.RegisterType<IRepository<Vote, Guid>>()
-                .As<Repository<Vote>>();
+            builder.RegisterType<Repository<Vote>>()
+                .As<IRepository<Vote, Guid>>();
 
-            builder.RegisterType<IRepository<VottingSession, Guid>>()
-                .As<Repository<VottingSession>>();
+            builder.RegisterType<Repository<VottingSession>>()
+                .As<IRepository<VottingSession, Guid>>();
 
             builder.RegisterType<MainDbContext>()
                 .AsSelf();
 
-            builder.RegisterType<IParser<ParseInfo, DeputyParserModel>>()
-                .As<DeputiesParser>();
+            builder.RegisterType<EntitiesFactory>()
+                .As<IEntitiesFactory>();
 
-            builder.RegisterType<IParser<ParseInfo, SessionParserModel>>()
-                .As<SessionParser>();
+            builder.RegisterType<DeputiesParser>()
+                .As<IParser<ParseInfo, DeputyParserModel[]>>();
 
-            builder.RegisterType<IParser<ParseInfo, VoteParserModel[]>>()
-                .Named<VotesParser>("pageVoteParser");
+            builder.RegisterType<SessionParser>()
+                .As<IParser<ParseInfo, SessionParserModel>>();
 
-            builder.RegisterType<IParser<ParseInfo, VoteParserModel[]>>()
-                .As<VoteParserFacade>()
+            builder.RegisterType<PageVotesParser>()
+                .Named<IParser<ParseInfo, VoteParserModel[]>>("pageVotesParser");
+
+            builder.RegisterType<DocumentVotesParser>()
+                .Named<IParser<ParseInfo, VoteParserModel[]>>("documentVotesParser")
                 .WithParameter(new ResolvedParameter(
                     (info, context) => info.Name == "parser",
                     (info, context) => context
-                        .ResolveNamed<IParser<ParseInfo, VoteParserModel[]>>("pageVoteParsers")));
+                        .ResolveNamed<IParser<ParseInfo, VoteParserModel[]>>("pageVotesParser")));
 
-            builder.RegisterType<IParser<ParseInfo, VottingSessionParserModel>>()
-                .As<VottingSessionParser>();
+            builder.RegisterType<VottingSessionParser>()
+                .As<IParser<ParseInfo, VottingSessionParserModel>>();
 
-            builder.RegisterType<IPdfContainer>()
-                .As<PdfContainer>();
+            var path = new Uri(Assembly.GetAssembly(typeof(DependencyRegistration))
+                .GetName().CodeBase).LocalPath;
 
-            builder.RegisterType<IPdfService>()
-                .As<PdfService>();
+            var configuration = ConfigurationManager.OpenExeConfiguration(path);
+
+            var directory = configuration.AppSettings.Settings["Directory"].Value;
+            var files = Directory.GetFiles(directory);
+
+            var filesInfo = files
+                .Select(f => new PdfFileInfo { Directory = directory, FileName = Path.GetFileName(f) })
+                .ToArray();
+
+            var parseFilesInfo = new ParseFilesInfo
+            {
+                FilesInfo = filesInfo
+            };
+
+            builder.RegisterInstance(parseFilesInfo)
+                .As<ParseFilesInfo>();
+
+            builder.RegisterType<PdfContainer>()
+                .As<IPdfContainer>();
+
+            builder.RegisterType<PdfService>()
+                .As<IPdfService>();
+
+            builder.RegisterType<VotingService>()
+                .As<IVotingService>()
+                .WithParameter(new ResolvedParameter(
+                    (info, context) => info.Name == "parser",
+                    (info, context) => context
+                        .ResolveNamed<IParser<ParseInfo, VoteParserModel[]>>("documentVotesParser")));
 
             return builder.Build();
         }

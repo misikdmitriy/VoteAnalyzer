@@ -91,10 +91,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\VotesApiController.cs" />
     <Compile Include="DependencyInjection\DependencyRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ParseFilesInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,8 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VoteAnalyzer.DataAccessLayer\VoteAnalyzer.DataAccessLayer.csproj">
@@ -123,6 +123,10 @@
     <ProjectReference Include="..\VoteAnalyzer.PdfIntegration\VoteAnalyzer.PdfIntegration.csproj">
       <Project>{9CFD20AC-564E-48E6-88BE-087C55221DF4}</Project>
       <Name>VoteAnalyzer.PdfIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoteAnalyzer.Services\VoteAnalyzer.Services.csproj">
+      <Project>{8A8E4BCC-C900-40AB-8BF2-E571AC76F140}</Project>
+      <Name>VoteAnalyzer.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

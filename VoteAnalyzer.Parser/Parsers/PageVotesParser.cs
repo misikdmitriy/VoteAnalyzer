@@ -9,7 +9,7 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
-    public class VotesParser : AbstractParser<ParseInfo, VoteParserModel[]>
+    public class PageVotesParser : AbstractParser<ParseInfo, VoteParserModel[]>
     {
         private readonly IPdfContainer _pdfContainer;
         private readonly IParser<ParseInfo, DeputyParserModel[]> _deputiesParser;
@@ -18,7 +18,7 @@ namespace VoteAnalyzer.Parser.Parsers
         private static readonly string[] TextBefore = { "Результат", "голосування" };
         private static readonly string TextAfter = "Підсумки";
 
-        public VotesParser(IParser<ParseInfo, DeputyParserModel[]> deputiesParser,
+        public PageVotesParser(IParser<ParseInfo, DeputyParserModel[]> deputiesParser,
             IPdfContainer pdfContainer,
             IParser<ParseInfo, VottingSessionParserModel> vottingSessionParser)
         {

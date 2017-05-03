@@ -37,7 +37,7 @@ namespace VoteAnalyzer.PdfIntegration.PdfContainers
                 _splittedTextDictionary[fileInfo] = result.ToArray();
             }
 
-            return _splittedTextDictionary[fileInfo][page];
+            return _splittedTextDictionary[fileInfo][page - 1];
         }
 
         public string GetContent(PdfFileInfo fileInfo, int page)
@@ -56,7 +56,7 @@ namespace VoteAnalyzer.PdfIntegration.PdfContainers
                 _contentDictionary[fileInfo] = result.ToArray();
             }
 
-            return _contentDictionary[fileInfo][page];
+            return _contentDictionary[fileInfo][page - 1];
         }
 
         public void Clear()

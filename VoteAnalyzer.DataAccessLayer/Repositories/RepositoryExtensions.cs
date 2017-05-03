@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using VoteAnalyzer.DataAccessLayer.Entities;
-using VoteAnalyzer.DataAccessLayer.Repositories;
 
-namespace VoteAnalyzer.Common.Extensions
+namespace VoteAnalyzer.DataAccessLayer.Repositories
 {
     public static class RepositoryExtensions
     {

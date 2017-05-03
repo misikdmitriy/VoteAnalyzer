@@ -55,7 +55,7 @@
     <Compile Include="DeputiesParserTests.cs" />
     <Compile Include="SessionParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VotesParserTests.cs" />
+    <Compile Include="PageVotesParserTests.cs" />
     <Compile Include="VottingSessionParserTests.cs" />
   </ItemGroup>
   <ItemGroup>

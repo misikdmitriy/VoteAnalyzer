@@ -10,12 +10,12 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 namespace VoteAnalyzer.Parser.Tests
 {
     [TestFixture]
-    public class VotesParserTests
+    public class PageVotesParserTests
     {
         private Mock<IPdfContainer> _pdfContainerMock;
         private Mock<IParser<ParseInfo, DeputyParserModel[]>> _deputyParserMock;
         private Mock<IParser<ParseInfo, VottingSessionParserModel>> _vottingSessionParserMock;
-        private VotesParser _parser;
+        private PageVotesParser _parser;
 
         [SetUp]
         public void Setup()
@@ -24,7 +24,7 @@ namespace VoteAnalyzer.Parser.Tests
             _deputyParserMock = new Mock<IParser<ParseInfo, DeputyParserModel[]>>();
             _vottingSessionParserMock = new Mock<IParser<ParseInfo, VottingSessionParserModel>>();
 
-            _parser = new VotesParser(_deputyParserMock.Object,
+            _parser = new PageVotesParser(_deputyParserMock.Object,
                 _pdfContainerMock.Object, _vottingSessionParserMock.Object);
         }
 

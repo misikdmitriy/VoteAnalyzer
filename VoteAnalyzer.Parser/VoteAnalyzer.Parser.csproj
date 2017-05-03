@@ -50,8 +50,8 @@
     <Compile Include="Models\VottingSessionParserModel.cs" />
     <Compile Include="Parsers\AbstractParser.cs" />
     <Compile Include="Parsers\DeputiesParser.cs" />
-    <Compile Include="Parsers\VoteParserFacade.cs" />
-    <Compile Include="Parsers\VotesParser.cs" />
+    <Compile Include="Parsers\DocumentVotesParser.cs" />
+    <Compile Include="Parsers\PageVotesParser.cs" />
     <Compile Include="Parsers\SessionParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

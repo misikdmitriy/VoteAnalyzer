@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Extensions\EnumerableExtension.cs" />
-    <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordSeparator.cs" />
   </ItemGroup>

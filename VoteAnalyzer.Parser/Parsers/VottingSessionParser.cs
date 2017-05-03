@@ -10,7 +10,7 @@ namespace VoteAnalyzer.Parser.Parsers
     /// Parse votting session
     /// Rule: votting session start with symbol '№': [NUMBER] [SESSION SUBJECT] '№'
     /// </summary>
-    public class VottingSessionParser : IParser<ParseInfo, VottingSessionParserModel>
+    public class VottingSessionParser : AbstractParser<ParseInfo, VottingSessionParserModel>
     {
         private readonly IPdfContainer _pdfContainer;
         private readonly IParser<ParseInfo, SessionParserModel> _sessionParser;
@@ -22,7 +22,7 @@ namespace VoteAnalyzer.Parser.Parsers
             _sessionParser = sessionParser;
         }
 
-        public VottingSessionParserModel Parse(ParseInfo argument)
+        public override VottingSessionParserModel Parse(ParseInfo argument)
         {
             var splitted = _pdfContainer.GetSeparatedWords(argument.FileInfo, argument.Page);
 

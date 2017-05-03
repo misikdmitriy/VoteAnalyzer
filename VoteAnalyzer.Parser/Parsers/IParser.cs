@@ -5,8 +5,9 @@
     /// </summary>
     /// <typeparam name="TIn">Input argument</typeparam>
     /// <typeparam name="TOut">Parsing result</typeparam>
-    public interface IParser<in TIn, out TOut>
+    public interface IParser<in TIn, TOut>
     {
         TOut Parse(TIn argument);
+        bool TryParse(TIn argument, out TOut result);
     }
 }

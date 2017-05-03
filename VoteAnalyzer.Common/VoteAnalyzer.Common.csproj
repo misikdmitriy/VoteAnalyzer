@@ -42,8 +42,15 @@
   <ItemGroup>
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Extensions\EnumerableExtension.cs" />
+    <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordSeparator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VoteAnalyzer.DataAccessLayer\VoteAnalyzer.DataAccessLayer.csproj">
+      <Project>{34468D5F-870A-4D6D-A96A-1E86467AC82C}</Project>
+      <Name>VoteAnalyzer.DataAccessLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,7 +7,7 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
-    public class SessionParser : IParser<ParseInfo, SessionParserModel>
+    public class SessionParser : AbstractParser<ParseInfo, SessionParserModel>
     {
         private readonly IPdfContainer _pdfContainer;
 
@@ -19,7 +19,7 @@ namespace VoteAnalyzer.Parser.Parsers
             _pdfContainer = pdfContainer;
         }
 
-        public SessionParserModel Parse(ParseInfo argument)
+        public override SessionParserModel Parse(ParseInfo argument)
         {
             var splitted = _pdfContainer.GetSeparatedWords(argument.FileInfo, argument.Page);
 

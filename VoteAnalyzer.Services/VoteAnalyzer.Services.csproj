@@ -43,5 +43,23 @@
     <Compile Include="VotingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VoteAnalyzer.Common\VoteAnalyzer.Common.csproj">
+      <Project>{D59229E6-D67C-4FCD-90A2-EF58401D7895}</Project>
+      <Name>VoteAnalyzer.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoteAnalyzer.DataAccessLayer\VoteAnalyzer.DataAccessLayer.csproj">
+      <Project>{34468D5F-870A-4D6D-A96A-1E86467AC82C}</Project>
+      <Name>VoteAnalyzer.DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoteAnalyzer.Parser\VoteAnalyzer.Parser.csproj">
+      <Project>{26A22B40-DB04-4222-8C3B-804E239DBC85}</Project>
+      <Name>VoteAnalyzer.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoteAnalyzer.PdfIntegration\VoteAnalyzer.PdfIntegration.csproj">
+      <Project>{9CFD20AC-564E-48E6-88BE-087C55221DF4}</Project>
+      <Name>VoteAnalyzer.PdfIntegration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

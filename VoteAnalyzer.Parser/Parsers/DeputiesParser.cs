@@ -8,7 +8,7 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
-    public class DeputiesParser : IParser<ParseInfo, DeputyParserModel[]>
+    public class DeputiesParser : AbstractParser<ParseInfo, DeputyParserModel[]>
     {
         private readonly IPdfContainer _pdfContainer;
 
@@ -20,7 +20,7 @@ namespace VoteAnalyzer.Parser.Parsers
             _pdfContainer = pdfContainer;
         }
 
-        public DeputyParserModel[] Parse(ParseInfo argument)
+        public override DeputyParserModel[] Parse(ParseInfo argument)
         {
             var deputies = new List<DeputyParserModel>();
 

@@ -64,12 +64,12 @@ namespace VoteAnalyzer.Parser.Parsers
 
                 var taken = 1;
 
-                var vote = cutted.ElementAt(startIndex - taken);
+                var vote = cutted.ElementAt(4 - taken);
 
                 while (!Constants.ExistingVotes
                     .Any(s => s.Equals(vote, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    vote = $"{cutted.ElementAt(startIndex - ++taken) } {vote}";
+                    vote = $"{cutted.ElementAt(4 - ++taken) } {vote}";
                 }
 
                 var vottingSession = _vottingSessionParser.Parse(argument);

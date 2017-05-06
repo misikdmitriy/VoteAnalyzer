@@ -51,6 +51,9 @@ namespace VoteAnalyzer.WebApi.DependencyInjection
             builder.RegisterType<SessionParser>()
                 .As<IParser<ParseInfo, SessionParserModel>>();
 
+            builder.RegisterType<FirstVoteParser>()
+                .As<IParser<string[], FirstVoteParserModel>>();
+
             builder.RegisterType<PageVotesParser>()
                 .Named<IParser<ParseInfo, VoteParserModel[]>>("pageVotesParser");
 

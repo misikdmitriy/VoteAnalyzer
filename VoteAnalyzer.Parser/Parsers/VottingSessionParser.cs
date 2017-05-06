@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.Parser.Models;
@@ -8,7 +9,7 @@ namespace VoteAnalyzer.Parser.Parsers
 {
     /// <summary>
     /// Parse votting session
-    /// Rule: votting session start with symbol '№': [NUMBER] [SESSION SUBJECT] '№'
+    /// Rule: votting session start with symbol '№': [NUMBER] [SESSION SUBJECT] ['№', 'Прізвище']
     /// </summary>
     public class VottingSessionParser : AbstractParser<ParseInfo, VottingSessionParserModel>
     {
@@ -28,7 +29,8 @@ namespace VoteAnalyzer.Parser.Parsers
 
             var startIndex = splitted.IndexOfByPredicate((s, i) => s == "№") + 1;
 
-            var finishIndex = splitted.IndexOfByPredicate((s, i) => i > startIndex && s == "№") - 1;
+            var finishIndex = splitted.IndexOfByPredicate((s, i) => i > startIndex && 
+                (s == "№" || s.Equals("Прізвище", StringComparison.InvariantCultureIgnoreCase))) - 1;
 
             int? number = null;
 

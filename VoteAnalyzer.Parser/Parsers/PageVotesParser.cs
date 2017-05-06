@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using VoteAnalyzer.Common.Constants;
 using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.Parser.Models;
 using VoteAnalyzer.PdfIntegration.PdfContainers;
@@ -14,17 +13,19 @@ namespace VoteAnalyzer.Parser.Parsers
         private readonly IPdfContainer _pdfContainer;
         private readonly IParser<ParseInfo, DeputyParserModel[]> _deputiesParser;
         private readonly IParser<ParseInfo, VottingSessionParserModel> _vottingSessionParser;
+        private readonly IParser<string[], FirstVoteParserModel> _firstVoteParser;
 
         private static readonly string[] TextBefore = { "п/п", "по-батькові", "депутата" };
-        private static readonly string[] TextAfter = { "\"Проти\"" };
 
         public PageVotesParser(IParser<ParseInfo, DeputyParserModel[]> deputiesParser,
             IPdfContainer pdfContainer,
-            IParser<ParseInfo, VottingSessionParserModel> vottingSessionParser)
+            IParser<ParseInfo, VottingSessionParserModel> vottingSessionParser, 
+            IParser<string[], FirstVoteParserModel> firstVoteParser)
         {
             _deputiesParser = deputiesParser;
             _pdfContainer = pdfContainer;
             _vottingSessionParser = vottingSessionParser;
+            _firstVoteParser = firstVoteParser;
         }
 
         public override VoteParserModel[] Parse(ParseInfo argument)
@@ -45,38 +46,32 @@ namespace VoteAnalyzer.Parser.Parsers
 
             IEnumerable<string> cutted = splitted;
 
-            var lastIteration = false;
+            var vottingSession = _vottingSessionParser.Parse(argument);
 
-            while (!lastIteration)
+            while (voteNumber < deputies.Length)
             {
-                cutted = cutted.Skip(startIndex + 1).ToArray();
+                cutted = cutted.Skip(startIndex).ToArray();
 
-                startIndex = cutted.IndexOfByPredicate((s, i) => int.TryParse(s, out int _));
+                var voteModel = _firstVoteParser.Parse(cutted.ToArray());
+                var splittedVote = voteModel.Vote.Split(' ');
 
-                if (startIndex == -1)
+                startIndex = cutted.IndexOfByPredicate((s, i) =>
                 {
-                    startIndex =
-                        cutted.IndexOfByPredicate(
-                            (s, i) => s.Equals(TextAfter[0], StringComparison.InvariantCultureIgnoreCase));
+                    for (var j = 0; j < splittedVote.Length; j++)
+                    {
+                        if (!splittedVote[j].Equals(cutted.ElementAt(i + j), 
+                            StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return false;
+                        }
+                    }
 
-                    lastIteration = true;
-                }
-
-                var taken = 1;
-
-                var vote = cutted.ElementAt(4 - taken);
-
-                while (!Constants.ExistingVotes
-                    .Any(s => s.Equals(vote, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    vote = $"{cutted.ElementAt(4 - ++taken) } {vote}";
-                }
-
-                var vottingSession = _vottingSessionParser.Parse(argument);
+                    return true;
+                }) + splittedVote.Length;
 
                 votes.Add(new VoteParserModel
                 {
-                    Vote = vote,
+                    Vote = voteModel.Vote,
                     VottingSessionParserModel = vottingSession,
                     DeputyParserModel = deputies[voteNumber++]
                 });

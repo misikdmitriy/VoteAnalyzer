@@ -20,10 +20,11 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
                 .FirstOrDefault();
         }
 
-        public static async Task<VottingSession> GetVottingSessionBySubjectAsync(
-            this IRepository<VottingSession, Guid> repository, string subject, Guid sessionId)
+        public static async Task<VottingSession> GetVottingSessionBySubjectAndNumberAsync(
+            this IRepository<VottingSession, Guid> repository, string subject, int? number, Guid sessionId)
         {
-            return (await repository.ReadAsync(s => s.SessionId == sessionId && s.Subject.Equals(subject, StringComparison.InvariantCultureIgnoreCase)))
+            return (await repository.ReadAsync(s => s.SessionId == sessionId && s.Number == number && 
+                s.Subject.Equals(subject, StringComparison.InvariantCultureIgnoreCase)))
                 .FirstOrDefault();
         }
 

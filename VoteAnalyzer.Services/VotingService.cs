@@ -27,34 +27,48 @@ namespace VoteAnalyzer.Services
 
         public async Task ParseDocumentAsync(PdfFileInfo fileInfo)
         {
-            var votes = _parser.Parse(new ParseInfo {FileInfo = fileInfo});
+            var votes = _parser.Parse(new ParseInfo { FileInfo = fileInfo });
 
             foreach (var vote in votes)
             {
-                var deputy = await _entitiesFactory.CreateDeputyAsync(vote.DeputyParserModel.Name);
-
-                var session = await _entitiesFactory.CreateSessionAsync(
-                    vote.VottingSessionParserModel.SessionParserModel.Name,
-                    vote.VottingSessionParserModel.SessionParserModel.DateTime);
-
-                var vottingSession = await _entitiesFactory.CreateVottingSessionAsync(session.Id,
-                    vote.VottingSessionParserModel.Number, vote.VottingSessionParserModel.Subject);
-
-                if (await _voteRepository.IsVoteExistsAsync(deputy.Id, vottingSession.Id))
+                try
                 {
-                    continue;
+                    var deputyTask = _entitiesFactory.CreateDeputyAsync(vote.DeputyParserModel.Name);
+
+                    var sessionTask = _entitiesFactory.CreateSessionAsync(
+                        vote.VottingSessionParserModel.SessionParserModel.Name,
+                        vote.VottingSessionParserModel.SessionParserModel.DateTime);
+
+                    await Task.WhenAll(deputyTask, sessionTask);
+
+                    var deputy = deputyTask.Result;
+                    var session = sessionTask.Result;
+
+                    var vottingSession = await _entitiesFactory.CreateVottingSessionAsync(session.Id,
+                        vote.VottingSessionParserModel.Number, vote.VottingSessionParserModel.Subject);
+
+                    if (await _voteRepository.IsVoteExistsAsync(deputy.Id, vottingSession.Id))
+                    {
+                        continue;
+                    }
+
+                    var knownVote = await _entitiesFactory.CreateKnownVoteAsync(vote.Vote);
+
+                    var realVote = new Vote
+                    {
+                        DeputyId = deputy.Id,
+                        KnownVoteId = knownVote.Id,
+                        VottingSessionId = vottingSession.Id
+                    };
+
+
+                    await _voteRepository.CreateAsync(realVote);
                 }
-
-                var knownVote = await _entitiesFactory.CreateKnownVoteAsync(vote.Vote);
-
-                var realVote = new Vote
+                catch (Exception e)
                 {
-                    DeputyId = deputy.Id,
-                    KnownVoteId = knownVote.Id,
-                    VottingSessionId = vottingSession.Id
-                };
-
-                await _voteRepository.CreateAsync(realVote);
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
         }
     }

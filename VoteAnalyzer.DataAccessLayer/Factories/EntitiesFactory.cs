@@ -62,7 +62,7 @@ namespace VoteAnalyzer.DataAccessLayer.Factories
             string subject = null)
         {
             var vottingSession =
-                    await _vottingSessionRepository.GetVottingSessionBySubjectAsync(subject, sessionId);
+                    await _vottingSessionRepository.GetVottingSessionBySubjectAndNumberAsync(subject, number, sessionId);
 
             if (vottingSession == null)
             {

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DeputyParserModel.cs" />
+    <Compile Include="Models\FirstVoteParserModel.cs" />
     <Compile Include="Models\ParseInfo.cs" />
     <Compile Include="Models\SessionParserModel.cs" />
     <Compile Include="Models\VoteParserModel.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Parsers\AbstractParser.cs" />
     <Compile Include="Parsers\DeputiesParser.cs" />
     <Compile Include="Parsers\DocumentVotesParser.cs" />
+    <Compile Include="Parsers\FirstVoteParser.cs" />
     <Compile Include="Parsers\PageVotesParser.cs" />
     <Compile Include="Parsers\SessionParser.cs" />
     <Compile Include="Parsers\IParser.cs" />

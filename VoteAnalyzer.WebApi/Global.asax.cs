@@ -1,10 +1,13 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 using Autofac;
 using Autofac.Integration.WebApi;
-
+using VoteAnalyzer.PdfIntegration.Models;
+using VoteAnalyzer.Services;
 using VoteAnalyzer.WebApi.DependencyInjection;
+using VoteAnalyzer.WebApi.Models;
 
 namespace VoteAnalyzer.WebApi
 {
@@ -29,6 +32,17 @@ namespace VoteAnalyzer.WebApi
             var container = DependencyRegistration.Register(builder);
 
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+            var voteService = container.Resolve<IVotingService>();
+            var fileInfo = container.Resolve<ParseFilesInfo>();
+
+            Task.Run(async () =>
+            {
+                foreach (var pdfFileInfo in fileInfo.FilesInfo)
+                {
+                    await voteService.ParseDocumentAsync(pdfFileInfo);
+                }
+            });
         }
     }
 }

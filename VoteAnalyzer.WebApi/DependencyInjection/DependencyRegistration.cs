@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Core;
-
+using Autofac.Features.Variance;
+using MediatR;
 using VoteAnalyzer.DataAccessLayer.DbContexts;
 using VoteAnalyzer.DataAccessLayer.Entities;
 using VoteAnalyzer.DataAccessLayer.Factories;
@@ -24,6 +26,31 @@ namespace VoteAnalyzer.WebApi.DependencyInjection
     {
         public static IContainer Register(ContainerBuilder builder)
         {
+            builder
+                .RegisterSource(new ContravariantRegistrationSource());
+
+            builder
+               .RegisterType<Mediator>()
+               .As<IMediator>()
+               .InstancePerLifetimeScope();
+
+            builder
+              .Register<SingleInstanceFactory>(ctx => {
+                  var c = ctx.Resolve<IComponentContext>();
+                  return t => { object o; return c.TryResolve(t, out o) ? o : null; };
+              })
+              .InstancePerLifetimeScope();
+
+            builder
+              .Register<MultiInstanceFactory>(ctx => {
+                  var c = ctx.Resolve<IComponentContext>();
+                  return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+              })
+              .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(typeof(DependencyRegistration).GetTypeInfo().Assembly)
+                .AsImplementedInterfaces(); 
+
             builder.RegisterType<Repository<Deputy>>()
                 .As<IRepository<Deputy, Guid>>();
 

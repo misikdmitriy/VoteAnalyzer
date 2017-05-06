@@ -16,6 +16,8 @@ namespace VoteAnalyzer.Parser.Parsers
         private readonly IPdfContainer _pdfContainer;
         private readonly IParser<ParseInfo, SessionParserModel> _sessionParser;
 
+        private readonly string[] _textBefore = { "№" };
+
         public VottingSessionParser(IPdfContainer pdfContainer,
             IParser<ParseInfo, SessionParserModel> sessionParser)
         {
@@ -27,9 +29,9 @@ namespace VoteAnalyzer.Parser.Parsers
         {
             var splitted = _pdfContainer.GetSeparatedWords(argument.FileInfo, argument.Page);
 
-            var startIndex = splitted.IndexOfByPredicate((s, i) => s == "№") + 1;
+            var startIndex = splitted.IndexOfSubsequence(_textBefore) + 1;
 
-            var finishIndex = splitted.IndexOfByPredicate((s, i) => i > startIndex && 
+            var finishIndex = splitted.IndexOfByPredicate((s, i) => i > startIndex &&
                 (s == "№" || s.Equals("Прізвище", StringComparison.InvariantCultureIgnoreCase))) - 1;
 
             int? number = null;

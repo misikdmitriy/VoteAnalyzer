@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using VoteAnalyzer.Common.Extensions;
@@ -38,11 +37,7 @@ namespace VoteAnalyzer.Parser.Parsers
 
             var deputies = _deputiesParser.Parse(argument);
 
-            var startIndex =
-                splitted.LastIndexOfByPredicate(
-                    (s, i) => s.Equals(TextBefore[0], StringComparison.InvariantCultureIgnoreCase)
-                              && splitted[i + 1].Equals(TextBefore[1], StringComparison.InvariantCultureIgnoreCase)
-                              && splitted[i + 2].Equals(TextBefore[2], StringComparison.InvariantCultureIgnoreCase)) + 3;
+            var startIndex = splitted.IndexOfSubsequence(TextBefore) + 3;
 
             IEnumerable<string> cutted = splitted;
 

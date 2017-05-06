@@ -73,5 +73,13 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
         protected virtual void AttachAll(MainDbContext context, TModel model)
         {
         }
+
+        public async Task<TModel[]> GetAll()
+        {
+            using (var context = new MainDbContext())
+            {
+                return await context.Set<TModel>().ToArrayAsync();
+            }
+        }
     }
 }

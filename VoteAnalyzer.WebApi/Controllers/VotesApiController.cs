@@ -1,32 +1,28 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
-using VoteAnalyzer.Services;
-using VoteAnalyzer.WebApi.Models;
+
+using MediatR;
+
+using VoteAnalyzer.WebApi.MediatrRequests;
 
 namespace VoteAnalyzer.WebApi.Controllers
 {
     [RoutePrefix("api/votes")]
     public class VotesApiController : ApiController
     {
-        private IVotingService _votingService;
-        private ParseFilesInfo _info;
+        private readonly IMediator _mediator;
 
-        public VotesApiController(IVotingService votingService, ParseFilesInfo info)
+        public VotesApiController(IMediator mediator)
         {
-            _votingService = votingService;
-
-            _info = info;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        [Route("demo")]
-        public async Task<IHttpActionResult> Temp()
+        [Route("")]
+        public async Task<IHttpActionResult> Votes()
         {
-            foreach (var pdfFileInfo in _info.FilesInfo)
-            {
-                await _votingService.ParseDocumentAsync(pdfFileInfo);
-            }
-            return Ok("otsosi");
+            var result = await _mediator.Send(new GetVotesRequest());
+            return Ok(result);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using VoteAnalyzer.Common.Constants;
+using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.Parser.Models;
 
 namespace VoteAnalyzer.Parser.Parsers
@@ -10,9 +12,12 @@ namespace VoteAnalyzer.Parser.Parsers
     {
         public override FirstVoteParserModel Parse(string[] argument)
         {
-            int taken;
+            var taken = FindVote(argument);
 
-            FindVote(argument, out taken);
+            if (taken == -1)
+            {
+                throw new ArgumentException("cannot find vote");
+            }
 
             return new FirstVoteParserModel
             {
@@ -20,33 +25,23 @@ namespace VoteAnalyzer.Parser.Parsers
             };
         }
 
-        private static bool FindVote(IEnumerable<string> argument, out int taken)
+        private static int FindVote(IEnumerable<string> argument)
         {
-            for (var i = 0; i < argument.Count(); i++)
-            {
-                foreach (var existingVote in Constants.ExistingVotes)
-                {
-                    var isEquals = true;
-                    for (var j = 0; j < existingVote.Length; j++)
-                    {
-                        if (!existingVote[j].Equals(argument.ElementAt(i + j),
-                            StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            isEquals = false;
-                            break;
-                        }
-                    }
+            var minIndex = int.MaxValue;
+            var taken = -1;
 
-                    if (isEquals)
-                    {
-                        taken = Array.IndexOf(Constants.ExistingVotes, existingVote);
-                        return true;
-                    }
+            foreach (var existingVote in Constants.ExistingVotes)
+            {
+                var index = argument.IndexOfSubsequence(existingVote);
+
+                if (index != -1 && minIndex > index)
+                {
+                    taken = Array.IndexOf(Constants.ExistingVotes, existingVote);
+                    minIndex = index;
                 }
             }
 
-            taken = -1;
-            return false;
+            return taken;
         }
     }
 }

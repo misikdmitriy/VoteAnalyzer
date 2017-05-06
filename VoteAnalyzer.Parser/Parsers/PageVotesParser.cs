@@ -55,19 +55,7 @@ namespace VoteAnalyzer.Parser.Parsers
                 var voteModel = _firstVoteParser.Parse(cutted.ToArray());
                 var splittedVote = voteModel.Vote.Split(' ');
 
-                startIndex = cutted.IndexOfByPredicate((s, i) =>
-                {
-                    for (var j = 0; j < splittedVote.Length; j++)
-                    {
-                        if (!splittedVote[j].Equals(cutted.ElementAt(i + j), 
-                            StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }) + splittedVote.Length;
+                startIndex = cutted.IndexOfSubsequence(splittedVote) + splittedVote.Length;
 
                 votes.Add(new VoteParserModel
                 {

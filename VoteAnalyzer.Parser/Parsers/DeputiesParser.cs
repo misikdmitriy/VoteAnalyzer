@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.Parser.Models;
 using VoteAnalyzer.PdfIntegration.PdfContainers;
@@ -28,57 +29,58 @@ namespace VoteAnalyzer.Parser.Parsers
 
             var splitted = _pdfContainer.GetSeparatedWords(argument.FileInfo, argument.Page);
 
-            var startIndex =
-                splitted.LastIndexOfByPredicate(
-                    (s, i) => s.Equals(TextBefore[0], StringComparison.InvariantCultureIgnoreCase)
-                              && splitted[i + 1].Equals(TextBefore[1], StringComparison.InvariantCultureIgnoreCase)
-                              && splitted[i + 2].Equals(TextBefore[2], StringComparison.InvariantCultureIgnoreCase)) + 3;
+            var startIndex = splitted.LastIndexOfSubsequence(TextBefore) + TextBefore.Length;
+            var finishIndex = splitted.IndexOfSubsequence(TextAfter);
 
-            IEnumerable<string> cutted = splitted;
+            var cutted = splitted
+                .Skip(startIndex)
+                .Take(finishIndex - startIndex)
+                .ToList();
 
-            while (startIndex != -1)
+            RemoveVotes(cutted);
+            RemoveNumbers(cutted);
+
+            for (var i = 0; i < cutted.Count; i += 3)
             {
-                cutted = cutted.Skip(startIndex).ToArray();
-
-                if (cutted.ElementAt(0).Equals(TextAfter[0], StringComparison.InvariantCultureIgnoreCase))
+                deputies.Add(new DeputyParserModel
                 {
-                    break;
-                }
-
-                if (int.TryParse(cutted.ElementAt(0), out var _))
-                {
-                    deputies.Add(new DeputyParserModel
-                    {
-                        Name = $"{cutted.ElementAt(1)} {cutted.ElementAt(2)} {cutted.ElementAt(3)}"
-                    });
-                }
-                else
-                {
-                    deputies.Add(new DeputyParserModel
-                    {
-                        Name = $"{cutted.ElementAt(0)} {cutted.ElementAt(1)} {cutted.ElementAt(3)}"
-                    });
-                }
-
-                var voteModel = _firstVoteParser.Parse(cutted.ToArray());
-                var splittedVote = voteModel.Vote.Split(' ');
-
-                startIndex = cutted.IndexOfByPredicate((s, i) =>
-                {
-                    for (var j = 0; j < splittedVote.Length; j++)
-                    {
-                        if (!splittedVote[j].Equals(cutted.ElementAt(i + j),
-                            StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }) + splittedVote.Length;
+                    Name = $"{cutted[i]} {cutted[i + 1]} {cutted[i + 2]}"
+                });
             }
 
             return deputies.ToArray();
+        }
+
+        private static void RemoveNumbers(IList<string> cutted)
+        {
+            while (true)
+            {
+                var startIndex = cutted.IndexOfByPredicate((s, i) => int.TryParse(s, out int _));
+                if (startIndex == -1)
+                {
+                    break;
+                }
+                cutted.RemoveAt(startIndex);
+            }
+        }
+
+        private void RemoveVotes(List<string> cutted)
+        {
+            while (true)
+            {
+                if (_firstVoteParser.TryParse(cutted.ToArray(), out var voteModel))
+                {
+                    var splittedVote = voteModel.Vote.Split(' ');
+
+                    var startIndex = cutted.IndexOfSubsequence(splittedVote);
+
+                    cutted.RemoveRange(startIndex, splittedVote.Length);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
     }
 }

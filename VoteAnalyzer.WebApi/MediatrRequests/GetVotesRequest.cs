@@ -39,7 +39,7 @@ namespace VoteAnalyzer.WebApi.MediatrRequests
         {
             var votes = new List<VoteDto>();
 
-            var voteModels = await _voteRepository.GetAll();
+            var voteModels = await _voteRepository.ReadAllAsync();
 
             foreach (var voteModel in voteModels)
             {

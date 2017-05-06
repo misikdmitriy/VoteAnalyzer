@@ -76,6 +76,7 @@ namespace VoteAnalyzer.DataAccessLayer.Tests
 
             // Act
             var result = vottingSessionRepoMock.Object.GetVottingSessionBySubjectAndNumberAsync("n1",
+                null,
                 vottingSessions[0].SessionId).Result;
 
             // Assert

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using VoteAnalyzer.Common.Extensions;
 using VoteAnalyzer.Parser.Models;
+using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
@@ -9,31 +12,42 @@ namespace VoteAnalyzer.Parser.Parsers
     public class DocumentVotesParser : AbstractParser<ParseInfo, VoteParserModel[]>
     {
         private readonly IParser<ParseInfo, VoteParserModel[]> _parser;
+        private readonly IPdfContainer _pdfContainer;
 
-        public DocumentVotesParser(IParser<ParseInfo, VoteParserModel[]> parser)
+        private readonly string[] _startText = { "Система", "поіменного", "голосування" };
+
+        public DocumentVotesParser(IParser<ParseInfo, VoteParserModel[]> parser, IPdfContainer pdfContainer)
         {
             _parser = parser;
+            _pdfContainer = pdfContainer;
         }
 
         public override VoteParserModel[] Parse(ParseInfo argument)
         {
             var votes = new List<VoteParserModel>();
 
-            bool isSuccess;
-
             argument.Page = 0;
 
-            do
+            while (true)
             {
                 argument.Page++;
-                isSuccess = _parser.TryParse(argument, out VoteParserModel[] voteParserModels);
 
-                if (isSuccess)
+                try
                 {
-                    votes.AddRange(voteParserModels);
+                    var splitted = _pdfContainer.GetSeparatedWords(argument.FileInfo, argument.Page);
+
+                    if (splitted.IndexOfSubsequence(_startText) == -1)
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception)
+                {
+                    break;
                 }
 
-            } while (isSuccess);
+                votes.AddRange(_parser.Parse(argument));
+            }
 
             return votes.ToArray();
         }

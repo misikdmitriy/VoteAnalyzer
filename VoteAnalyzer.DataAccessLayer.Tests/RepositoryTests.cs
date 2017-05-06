@@ -151,5 +151,19 @@ namespace VoteAnalyzer.DataAccessLayer.Tests
             // Assert
             Repository.DeleteAsync(Guid.NewGuid()).Wait();
         }
+
+        [Test]
+        public void ReadAllAsyncShouldReturnCorrectArrayOfModels()
+        {
+            // Arrange
+            var initialLength = Repository.ReadAllAsync().Result.Length;
+            Repository.CreateAsync(_vottingSession);
+
+            // Act
+            var resultLength = Repository.ReadAllAsync().Result.Length;
+
+            // Assert
+            resultLength.ShouldBe(initialLength + 1);
+        }
     }
 }

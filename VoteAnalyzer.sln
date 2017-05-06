@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteAnalyzer.PdfIntegration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteAnalyzer.PdfIntegration.Tests", "VoteAnalyzer.PdfIntegration.Tests\VoteAnalyzer.PdfIntegration.Tests.csproj", "{B6D04655-B6A3-4621-93E5-560371279A41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteAnalyzer.Tests.Common", "VoteAnalyzer.Tests.Common\VoteAnalyzer.Tests.Common.csproj", "{92B09759-5FAC-4FD9-82CC-5983E8B04BA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{B6D04655-B6A3-4621-93E5-560371279A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6D04655-B6A3-4621-93E5-560371279A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6D04655-B6A3-4621-93E5-560371279A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B09759-5FAC-4FD9-82CC-5983E8B04BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B09759-5FAC-4FD9-82CC-5983E8B04BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B09759-5FAC-4FD9-82CC-5983E8B04BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B09759-5FAC-4FD9-82CC-5983E8B04BA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +86,6 @@ Global
 		{698F535D-DDDE-4168-B61C-CCE3C972D8BE} = {BA5F6690-95F1-43FB-AF6E-634F43E5F931}
 		{0B02A2B6-1CD5-4762-9DA2-AEB4335251A8} = {BA5F6690-95F1-43FB-AF6E-634F43E5F931}
 		{B6D04655-B6A3-4621-93E5-560371279A41} = {BA5F6690-95F1-43FB-AF6E-634F43E5F931}
+		{92B09759-5FAC-4FD9-82CC-5983E8B04BA7} = {BA5F6690-95F1-43FB-AF6E-634F43E5F931}
 	EndGlobalSection
 EndGlobal

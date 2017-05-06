@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -40,7 +41,15 @@ namespace VoteAnalyzer.WebApi
             {
                 foreach (var pdfFileInfo in fileInfo.FilesInfo)
                 {
-                    await voteService.ParseDocumentAsync(pdfFileInfo);
+                    try
+                    {
+                        await voteService.ParseDocumentAsync(pdfFileInfo);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
                 }
             });
         }

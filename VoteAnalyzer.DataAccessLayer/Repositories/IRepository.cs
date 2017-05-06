@@ -14,6 +14,6 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
         Task UpdateAsync(TModel model);
         Task DeleteAsync(TId id);
 
-        Task<TModel[]> GetAll();
+        Task<TModel[]> ReadAllAsync();
     }
 }

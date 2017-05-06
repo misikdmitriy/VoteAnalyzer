@@ -24,5 +24,13 @@ namespace VoteAnalyzer.WebApi.Controllers
             var result = await _mediator.Send(new GetVotesRequest());
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("{deputyName}")]
+        public async Task<IHttpActionResult> InfluenceZone(string deputyName)
+        {
+            var result = await _mediator.Send(new GetInfluenceZoneRequest(deputyName));
+            return Ok(result);
+        }
     }
 }

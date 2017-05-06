@@ -74,7 +74,7 @@ namespace VoteAnalyzer.DataAccessLayer.Repositories
         {
         }
 
-        public async Task<TModel[]> GetAll()
+        public async Task<TModel[]> ReadAllAsync()
         {
             using (var context = new MainDbContext())
             {

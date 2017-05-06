@@ -4,7 +4,7 @@ namespace VoteAnalyzer.PdfIntegration.PdfServices
 {
     public interface IPdfService
     {
-        string ConvertToText(PdfFileInfo info, int page);
+        string GetContent(PdfFileInfo info, int page);
         int GetNumberOfPages(PdfFileInfo info);
         bool Exists(PdfFileInfo info);
     }

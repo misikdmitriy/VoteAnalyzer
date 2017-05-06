@@ -33,7 +33,7 @@ namespace VoteAnalyzer.PdfIntegration.Tests
         {
             // Arrange
             // Act
-            var result = _pdfService.ConvertToText(_parseInfo, 2);
+            var result = _pdfService.GetContent(_parseInfo, 2);
 
             // Assert
             result.Length.ShouldBePositive();
@@ -45,7 +45,7 @@ namespace VoteAnalyzer.PdfIntegration.Tests
             // Arrange
             // Act
             // Assert
-            Should.Throw<FileNotFoundException>(() => _pdfService.ConvertToText(_uncorrectFileInfo, 0));
+            Should.Throw<FileNotFoundException>(() => _pdfService.GetContent(_uncorrectFileInfo, 0));
         }
 
         [Test]

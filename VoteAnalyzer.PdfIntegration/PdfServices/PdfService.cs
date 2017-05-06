@@ -12,7 +12,7 @@ namespace VoteAnalyzer.PdfIntegration.PdfServices
 {
     public class PdfService : IPdfService
     {
-        public string ConvertToText(PdfFileInfo info, int page)
+        public string GetContent(PdfFileInfo info, int page)
         {
             var path = BuildPath(info);
 

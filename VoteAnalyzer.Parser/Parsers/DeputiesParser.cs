@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using VoteAnalyzer.Common.Extensions;
@@ -13,7 +12,7 @@ namespace VoteAnalyzer.Parser.Parsers
         private readonly IPdfContainer _pdfContainer;
         private readonly IParser<string[], FirstVoteParserModel> _firstVoteParser;
 
-        private static readonly string[] TextBefore = { "п/п", "по-батькові", "депутата" };
+        private static readonly string[] TextBefore = { "по-батькові", "депутата" };
         private static readonly string[] TextAfter = { "ПІДСУМКИ" };
 
         public DeputiesParser(IPdfContainer pdfContainer, 

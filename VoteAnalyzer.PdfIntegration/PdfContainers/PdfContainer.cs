@@ -49,7 +49,7 @@ namespace VoteAnalyzer.PdfIntegration.PdfContainers
 
                 for (var pageNum = 0; pageNum < numberOfPages; pageNum++)
                 {
-                    var content = _pdfService.ConvertToText(fileInfo, pageNum + 1);
+                    var content = _pdfService.GetContent(fileInfo, pageNum + 1);
                     result.Add(content);
                 }
 

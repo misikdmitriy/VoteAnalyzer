@@ -105,7 +105,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MediatrRequests\GetInfluenceZoneRequest.cs" />
     <Compile Include="MediatrRequests\GetVotesRequest.cs" />
+    <Compile Include="Models\DeputyInfluenceDto.cs" />
     <Compile Include="Models\ParseFilesInfo.cs" />
     <Compile Include="Models\VoteDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

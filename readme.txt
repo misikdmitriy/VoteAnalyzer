@@ -3,3 +3,4 @@
 
 /api/votes - get all votes
 /api/votes/{deputyName} - get deputy influence
+/swagger - swagger page

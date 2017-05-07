@@ -12,7 +12,7 @@ namespace VoteAnalyzer.PdfIntegration.Tests
         private IPdfService _pdfService;
         private readonly PdfFileInfo _parseInfo = new PdfFileInfo
         {
-            Directory = @"C:\Users\mad_b\Documents\visual studio 2017\Projects\VoteAnalyzer\VoteAnalyzer.Files",
+            Directory = @"C:\Path\VoteAnalyzer.Files",
             FileName = @"Результат поіменного голосування_03.04.2017.pdf",
         };
 

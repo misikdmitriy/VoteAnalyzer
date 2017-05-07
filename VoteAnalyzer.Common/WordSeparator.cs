@@ -4,7 +4,7 @@ namespace VoteAnalyzer.Common
 {
     public class WordSeparator
     {
-        private static readonly char[] Delimeters = { ' ', '.', ',', ':', '\n' };
+        private static readonly char[] Delimeters = { ' ', '.', ',', ':', '\n', (char)160 };
 
         public static string[] Split(string text)
         {

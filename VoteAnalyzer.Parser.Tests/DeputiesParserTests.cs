@@ -76,6 +76,7 @@ namespace VoteAnalyzer.Parser.Tests
                     model = index < 1 
                         ? new FirstVoteParserModel {Vote = "За"} 
                         : null;
+                    index++;
                 })
                 .Returns(() => index < 2);
 

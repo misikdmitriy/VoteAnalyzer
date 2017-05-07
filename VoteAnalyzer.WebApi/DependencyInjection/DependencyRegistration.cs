@@ -66,6 +66,9 @@ namespace VoteAnalyzer.WebApi.DependencyInjection
             builder.RegisterType<Repository<VottingSession>>()
                 .As<IRepository<VottingSession, Guid>>();
 
+            builder.RegisterType<Repository<ParsedFile>>()
+                .As<IRepository<ParsedFile, Guid>>();
+
             builder.RegisterType<MainDbContext>()
                 .AsSelf();
 
@@ -83,13 +86,6 @@ namespace VoteAnalyzer.WebApi.DependencyInjection
 
             builder.RegisterType<PageVotesParser>()
                 .Named<IParser<ParseInfo, VoteParserModel[]>>("pageVotesParser");
-
-            builder.RegisterType<DocumentVotesParser>()
-                .Named<IParser<ParseInfo, VoteParserModel[]>>("documentVotesParser")
-                .WithParameter(new ResolvedParameter(
-                    (info, context) => info.Name == "parser",
-                    (info, context) => context
-                        .ResolveNamed<IParser<ParseInfo, VoteParserModel[]>>("pageVotesParser")));
 
             builder.RegisterType<VottingSessionParser>()
                 .As<IParser<ParseInfo, VottingSessionParserModel>>();
@@ -120,12 +116,12 @@ namespace VoteAnalyzer.WebApi.DependencyInjection
             builder.RegisterType<PdfService>()
                 .As<IPdfService>();
 
-            builder.RegisterType<VotingService>()
-                .As<IVotingService>()
+            builder.RegisterType<VotesCounter>()
+                .As<IVotesCounter>()
                 .WithParameter(new ResolvedParameter(
                     (info, context) => info.Name == "parser",
                     (info, context) => context
-                        .ResolveNamed<IParser<ParseInfo, VoteParserModel[]>>("documentVotesParser")));
+                        .ResolveNamed<IParser<ParseInfo, VoteParserModel[]>>("pageVotesParser")));
 
             return builder.Build();
         }

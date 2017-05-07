@@ -7,6 +7,9 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
+    /// <summary>
+    /// Search all votes on page uisng FirstVoteParser
+    /// </summary>
     public class PageVotesParser : AbstractParser<ParseInfo, VoteParserModel[]>
     {
         private readonly IPdfContainer _pdfContainer;

@@ -7,6 +7,10 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
+    /// <summary>
+    /// Parse session name
+    /// Rule: 'Броварська міська рада' [NAME] 'від' [DATE]
+    /// </summary>
     public class SessionParser : AbstractParser<ParseInfo, SessionParserModel>
     {
         private readonly IPdfContainer _pdfContainer;

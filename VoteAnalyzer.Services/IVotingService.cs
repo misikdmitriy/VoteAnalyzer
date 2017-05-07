@@ -3,7 +3,7 @@ using VoteAnalyzer.PdfIntegration.Models;
 
 namespace VoteAnalyzer.Services
 {
-    public interface IVotingService
+    public interface IVotesCounter
     {
         Task ParseDocumentAsync(PdfFileInfo fileInfo);
     }

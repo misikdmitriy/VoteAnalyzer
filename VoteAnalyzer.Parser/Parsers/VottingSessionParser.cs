@@ -41,9 +41,18 @@ namespace VoteAnalyzer.Parser.Parsers
                 number = n;
             }
 
-            var subject = splitted.Skip(startIndex + 1)
+            string subject;
+
+            if (finishIndex - startIndex <= 0)
+            {
+                subject = "";
+            }
+            else
+            {
+                subject = splitted.Skip(startIndex + 1)
                     .Take(finishIndex - startIndex)
                     .Aggregate((current, next) => $"{current} {next}");
+            }
 
             var session = _sessionParser.Parse(argument);
 

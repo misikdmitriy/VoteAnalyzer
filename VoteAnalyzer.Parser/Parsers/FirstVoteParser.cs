@@ -8,6 +8,9 @@ using VoteAnalyzer.Parser.Models;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
+    /// <summary>
+    /// Search first known vote
+    /// </summary>
     public class FirstVoteParser : AbstractParser<string[], FirstVoteParserModel>
     {
         public override FirstVoteParserModel Parse(string[] argument)

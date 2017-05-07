@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Configurations\DeputyTypeConfiguration.cs" />
     <Compile Include="Configurations\KnownVoteTypeConfiguration.cs" />
+    <Compile Include="Configurations\ParsedFileTypeConfiguration.cs" />
     <Compile Include="Configurations\SessionTypeConfiguration.cs" />
     <Compile Include="Configurations\VoteTypeConfiguration.cs" />
     <Compile Include="Configurations\VottingSessionTypeConfiguration.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Entities\IIdentifiable.cs" />
     <Compile Include="DbContexts\MainDbContext.cs" />
     <Compile Include="Entities\KnownVote.cs" />
+    <Compile Include="Entities\ParsedFile.cs" />
     <Compile Include="Entities\Session.cs" />
     <Compile Include="Entities\Vote.cs" />
     <Compile Include="Entities\VottingSession.cs" />
@@ -64,6 +66,10 @@
     <Compile Include="Migrations\201705021655317_Initial.cs" />
     <Compile Include="Migrations\201705021655317_Initial.Designer.cs">
       <DependentUpon>201705021655317_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705070823413_AddParsedFileEntity.cs" />
+    <Compile Include="Migrations\201705070823413_AddParsedFileEntity.Designer.cs">
+      <DependentUpon>201705070823413_AddParsedFileEntity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +84,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705021655317_Initial.resx">
       <DependentUpon>201705021655317_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705070823413_AddParsedFileEntity.resx">
+      <DependentUpon>201705070823413_AddParsedFileEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

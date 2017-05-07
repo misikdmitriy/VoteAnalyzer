@@ -17,6 +17,11 @@ namespace VoteAnalyzer.WebApi.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Get all votes
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Returns all votes</response>
         [HttpGet]
         [Route("")]
         public async Task<IHttpActionResult> Votes()
@@ -25,6 +30,14 @@ namespace VoteAnalyzer.WebApi.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get influences zones near the deputy 
+        /// if influence == 1 than this deputies votes always the same way
+        /// if influence == 0 than this deputies always votes differently
+        /// </summary>
+        /// <param name="deputyName"></param>
+        /// <returns></returns>
+        /// <response code="200">Returns all influence zones</response>
         [HttpGet]
         [Route("{deputyName}")]
         public async Task<IHttpActionResult> InfluenceZone(string deputyName)

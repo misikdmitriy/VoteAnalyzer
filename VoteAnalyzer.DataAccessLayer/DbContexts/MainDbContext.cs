@@ -18,6 +18,7 @@ namespace VoteAnalyzer.DataAccessLayer.DbContexts
         public IDbSet<Vote> Votes { get; set; }
         public IDbSet<KnownVote> KnownVotes { get; set; }
         public IDbSet<VottingSession> VottingSessions { get; set; }
+        public IDbSet<ParsedFile> ParsedFiles { get; set; }
 
         public MainDbContext()
             : this("MainDbContext")
@@ -36,6 +37,7 @@ namespace VoteAnalyzer.DataAccessLayer.DbContexts
             modelBuilder.Configurations.Add(new VoteTypeConfiguration());
             modelBuilder.Configurations.Add(new VottingSessionTypeConfiguration());
             modelBuilder.Configurations.Add(new KnownVoteTypeConfiguration());
+            modelBuilder.Configurations.Add(new ParsedFileTypeConfiguration());
         }
     }
 }

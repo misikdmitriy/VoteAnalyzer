@@ -7,6 +7,10 @@ using VoteAnalyzer.PdfIntegration.PdfContainers;
 
 namespace VoteAnalyzer.Parser.Parsers
 {
+    /// <summary>
+    /// Parse deputies
+    /// Rule: ... 'по-батькові депутата' 1 [DEPUTY NAME] 2 [DEPUTY NAME] ....
+    /// </summary>
     public class DeputiesParser : AbstractParser<ParseInfo, DeputyParserModel[]>
     {
         private readonly IPdfContainer _pdfContainer;
